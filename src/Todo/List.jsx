@@ -1,4 +1,6 @@
-export const List = ({ tasks, onDeleteTask, onClearAll }) => {
+import { AiFillCheckCircle } from "react-icons/ai";
+
+export const List = ({ tasks, onDeleteTask, onClearAll, onTaskToggle }) => {
     
     return (
         <>
@@ -8,12 +10,15 @@ export const List = ({ tasks, onDeleteTask, onClearAll }) => {
                 ) : (
                     tasks.map((task, index) => (
                         <li key={index}>
-                            <span className="task-text">{task}</span>
+                            <span className={`task-text ${task.checked ? 'checked' : 'not-checked'}`}>{task.content   }</span>
+                            <button className="toggle" checked={task.checked} onClick={() => onTaskToggle(index)}> <AiFillCheckCircle />
+                            </button>
                             <button className="delete" onClick={() => onDeleteTask(index)}>✖</button>
                         </li>
                     ))
                 )}
             </ul>
+           
             <button onClick={onClearAll}>Clear All</button>
          </>
     );

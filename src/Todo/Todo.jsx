@@ -9,18 +9,19 @@ export default function Todo() {
     const [dateTime, setDateTime] = useState("");
 
     const handleFormSubmit = (input) => {
-        if (!input.trim()) {
-            toast.error('Task cannot be empty');
-            return;
-        }
+        const {id, content, checked} = input;
+        // if (!input.trim()) {
+        //     toast.error('Task cannot be empty');
+        //     return;
+        // }
 
-        if (tasks.includes(input.trim())) {
-            toast.error('Task already exists');
-            setInput("");
-            return;
-        }
+     const ifTodoExists = tasks.find((task) => task.content === content);
+     if (ifTodoExists) {
+         toast.error('Task already exists');
+         return;
+     }
 
-        setTasks((prev) => [...prev, input.trim()]);
+        setTasks((prev) => [...prev, {id, content, checked}]);
         toast.success('Task added successfully!');
     };
   
@@ -41,18 +42,24 @@ export default function Todo() {
         toast.success('Task deleted');
     };
     const handleClearAll = () => {
-        setTasks([]);
+        setTasks({
+            id : "",
+            content : "",
+            checked : false
+        });
         toast.success('All tasks cleared');
     };
 
-
+    const handleTaskToggle = (index) => {
+        setTasks(tasks.map((task, i) => i === index ? { ...task, checked: !task.checked } : task));
+    };
 
     return (
         <div className="todo-container">
             <h1>To-Do List</h1>
             <p>{dateTime}</p>
             <TodoForm  onAddTask={handleFormSubmit}  />
-            <List tasks={tasks} onDeleteTask={handleDeleteTask}  onClearAll={handleClearAll} />
+            <List tasks={tasks} onDeleteTask={handleDeleteTask}  onClearAll={handleClearAll} onTaskToggle={handleTaskToggle} />
            
             <Toaster position="top-right" />
         </div>
