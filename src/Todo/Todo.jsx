@@ -5,7 +5,10 @@ import {List} from "./List";
 import './Todo.css';
 
 export default function Todo() {
-    const [tasks, setTasks] = useState([]);
+    const [tasks, setTasks] = useState( () => {
+        const storedTasks = localStorage.getItem('todoList');
+        return storedTasks ? JSON.parse(storedTasks) : [];
+    }  );
     const [dateTime, setDateTime] = useState("");
 
     const handleFormSubmit = (input) => {
@@ -25,6 +28,7 @@ export default function Todo() {
         toast.success('Task added successfully!');
     };
   
+    localStorage.setItem('todoList', JSON.stringify(tasks));
     useEffect( () => {
         const interval =  setInterval( () => {
             const now = new Date();
