@@ -46,14 +46,11 @@ export default function Todo() {
         toast.success('Task deleted');
     };
     const handleClearAll = () => {
-        setTasks({
-            id : "",
-            content : "",
-            checked : false
-        });
+        setTasks([]); // Set an empty array instead of an object inside an array
+        localStorage.removeItem('todoList'); // Remove only the tasks, not entire localStorage
         toast.success('All tasks cleared');
     };
-
+    
     const handleTaskToggle = (index) => {
         setTasks(tasks.map((task, i) => i === index ? { ...task, checked: !task.checked } : task));
     };
